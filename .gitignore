@@ -2,3 +2,5 @@ env/
 api_key.py
 .vscode/
 __pycache__
+db.sqlite3
+migrations/

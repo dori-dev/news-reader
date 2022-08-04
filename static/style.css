@@ -1,0 +1,67 @@
+@font-face {
+  font-family: Vazir;
+  src: url("fonts/Vazir.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+* {
+  direction: rtl;
+  font-family: Vazir;
+  box-sizing: border-box;
+}
+
+.head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 12px;
+  margin: 12px auto;
+}
+
+#newsBox {
+  margin: 16px auto 40px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  background-color: #f8f9fa;
+  padding: 22px;
+  /* visibility: hidden; */
+}
+
+.newsCard {
+  width: 33vw;
+  margin: 7px;
+}
+
+#img {
+  height: 406px;
+  width: 721px;
+}
+
+.line {
+  width: 30vw;
+  border: 1px solid black;
+  margin: 7px;
+  background-color: black;
+  height: 4px;
+  border-radius: 24px;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+@media only screen and (max-width: 1150px) {
+  .newsCard {
+    width: 83vw;
+    margin: 7px;
+  }
+}

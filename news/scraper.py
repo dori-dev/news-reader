@@ -1,15 +1,8 @@
-import time
-import json
-import requests
-from requests import exceptions
-from django.conf import settings
+from typing import List
+from requests import get, exceptions
+from .rss_parser import Parser, FeedItem
 
-API = "https://api.rss2json.com/v1/api.json"
-api_data = {
-    'rss_url': '',
-    'api_key': settings.API_KEY,
-    'count': 100
-}
+
 TIMEOUT = 2
 
 # should get from admin site and database(with default)
@@ -26,6 +19,7 @@ rss_urls = {
         "tasnimnews": "https://www.tasnimnews.com/fa/rss/feed/0/7/0/%D8%A2%D8%AE%D8%B1%DB%8C%D9%86-%D8%A7%D8%AE%D8%A8%D8%A7%D8%B1-%D8%A7%D8%AE%D8%A8%D8%A7%D8%B1-%D8%B1%D9%88%D8%B2",
     },
     "sport": {
+        # TODO varzesh3 not have category
         "latest": "https://www.varzesh3.com/rss/all",
         "local_football": "https://www.varzesh3.com/rss/domesticfootball",
         "foreign_football": "https://www.varzesh3.com/rss/foreignfootball",
@@ -39,15 +33,15 @@ rss_urls = {
 }
 
 
-def get_data(rss_urls: list):
+def get_data(rss_urls: list) -> List[FeedItem]:
     result = []
     for rss_url in rss_urls:
-        cache_disable = f"?time={int(time.time())}"
-        api_data['rss_url'] = rss_url+cache_disable
         try:
-            response = requests.post(API, data=api_data, timeout=TIMEOUT)
+            xml = get(rss_url, timeout=TIMEOUT)
         except (exceptions.ConnectionError, exceptions.ReadTimeout):
             continue
-        data: dict = json.loads(response.text)
-        result.extend(data.get('items', []))
+        parser = Parser(xml.content)
+        feed = parser.parse()
+        data = feed.feed
+        result.extend(data)
     return result

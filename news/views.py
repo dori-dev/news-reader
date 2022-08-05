@@ -6,13 +6,15 @@ from . import scraper
 
 rss_urls = [
     "https://www.isna.ir/rss",
+    "https://www.khabaronline.ir/rss",
+    "https://www.mehrnews.com/rss",
 ]
 
 
 def index(request):
     data = scraper.get_data(rss_urls)
     for new in data:
-        search_new = New.objects.filter(title=new['title'])
+        search_new = New.objects.filter(title=new.title)
         if not search_new.exists():
             New.create_new(new)
     context = {

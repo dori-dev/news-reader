@@ -36,11 +36,10 @@ nav {
   flex-wrap: wrap;
   background-color: #f8f9fa;
   padding: 22px;
-  /* visibility: hidden; */
 }
 
 .newsCard {
-  width: 33vw;
+  width: 40vw;
   margin: 7px;
 }
 

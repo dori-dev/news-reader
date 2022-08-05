@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any
 from django.db import models
-from django.utils.timezone import make_aware
+from django.utils.timezone import make_aware, now
 from taggit.managers import TaggableManager
 from .rss_parser import FeedItem
 
@@ -46,10 +46,7 @@ class New(models.Model):
         try:
             pub_date = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %Z")
         except ValueError:
-            print()
-            print('datetime has changed')
-            print(date)
-            print()
+            return now()
         pub_date = pub_date + GMP_IRAN_TIMEZONE
         pub_date = make_aware(pub_date)
         return pub_date

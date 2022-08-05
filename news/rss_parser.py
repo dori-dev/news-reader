@@ -60,7 +60,8 @@ class Parser:
                 link = self.get_text(item, "guid")
 
             enclosure = item.find("enclosure")
-            image = enclosure.get("url")
+            if enclosure:
+                image = enclosure.get("url")
 
             item_dict = {
                 "title": self.get_text(item, "title"),

@@ -56,41 +56,42 @@
     </nav>
     <div class="head container-fluid">
       <h3>
-        آخرین اخبار <span class="badge text-bg-secondary">توسط محمد دری</span>
+        <span class="badge text-bg-secondary">آخرین اخبار</span>
       </h3>
       <span class="line"></span>
     </div>
     <div id="newsBox" class="container-fluid">
       {% for new in news %}
-      <div class="newsCard card">
-        <img
-          src="{{ new.thumbnail }}"
-          class="img ard-img-top img-thumbnail"
-          alt="{{ new.title }}"
-        />
-        <h5 class="card-header">{{ new.title }}</h5>
-        <div class="card-body">
-          <h5 class="card-title">
-            {% for category in new.categories.all %}
-            <a href="{{ category.slug }}">{{ category }}</a>
-            {% if forloop.last %}
-            {% else %}
-            -
-            {% endif %}
-              
-            {% endfor %}
-          </h5>
-          <p class="card-text">{{ new.description }}</p>
-          <a
-            target="_blank"
-            href="{{ new.link }}"
-            class="btn btn-primary"
-            >بیشتر ...
-          </a>
+        <div class="newsCard card">
+          <img
+            src="{{ new.thumbnail }}"
+            class="img ard-img-top img-thumbnail"
+            alt="{{ new.title }}"
+          />
+          <h5 class="card-header">{{ new.title }}</h5>
+          <div class="card-body">
+            <h5 class="card-title">
+              {% for category in new.categories.all %}
+              <a href="{{ category.slug }}">{{ category }}</a>
+              {% if forloop.last %}
+              {% else %}
+              -
+              {% endif %}
+                
+              {% endfor %}
+            </h5>
+            <p class="card-text">{{ new.description }}</p>
+            <a
+              target="_blank"
+              href="{{ new.link }}"
+              class="btn btn-primary"
+              >بیشتر ...
+            </a>
+          </div>
+          <div class="text-center card-footer text-muted">{{ new.pub_date|to_jalali:'%H:%M - %Y/%m/%d' }}</div>
         </div>
-        <div class="text-center card-footer text-muted">{{ new.pub_date|to_jalali:'%H:%M - %Y/%m/%d' }}</div>
-      </div>
       {% endfor %}
+      </div>
     </div>
     <footer id="sticky-footer" class="flex-shrink-0 py-2 bg-dark text-white-50">
       <div class="container-fluid text-center">

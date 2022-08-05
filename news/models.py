@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from typing import Any
 from django.db import models
 from django.utils.timezone import make_aware, now
 from taggit.managers import TaggableManager
@@ -20,7 +19,7 @@ class New(models.Model):
 
     @staticmethod
     def create_new(new_item: FeedItem):
-        title = new_item.title
+        title = new_item.title.strip()
         # extract and set published date
         pub_date = New.convert_date(new_item.pub_date)
         link = new_item.link
@@ -35,7 +34,9 @@ class New(models.Model):
             description=description
         )
         # add categories
-        categories = New.set_categories(new_item.categories)
+        categories = New.set_categories(
+            New.replace_category(new_item.categories)
+        )
         if categories:
             new.categories.add(*categories)
         new.save()
@@ -52,7 +53,7 @@ class New(models.Model):
         return pub_date
 
     @staticmethod
-    def set_categories(categories: str) -> Any:
+    def set_categories(categories: str) -> list:
         if ">" in categories:
             sep = ">"
         elif " و " in categories:
@@ -60,11 +61,24 @@ class New(models.Model):
         else:
             sep = None
         if sep is not None:
-            categories = list(map(
+            return list(map(
                 str.strip,
                 categories.split(sep)
             ))
-        return categories
+        return [categories]
+
+    @staticmethod
+    def replace_category(input_categories: str):
+        replaces = {
+            ("اخبار استان ها", "استانها"): "استان‌ها",
+        }
+        for categories in replaces.keys():
+            for category in categories:
+                input_categories = input_categories.replace(
+                    category,
+                    replaces[categories]
+                )
+        return input_categories
 
     def __str__(self):
         return self.title

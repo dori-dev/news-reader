@@ -34,13 +34,13 @@ nav {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  background-color: #f8f9fa;
   padding: 22px;
 }
 
 .newsCard {
   width: 40vw;
   margin: 7px;
+  margin-bottom: 14px;
 }
 
 #img {
@@ -75,4 +75,8 @@ footer {
   text-align: right;
   max-height: 280px;
   overflow-y: auto;
+}
+
+.categories a {
+  text-decoration: none;
 }

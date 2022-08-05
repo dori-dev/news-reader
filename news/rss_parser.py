@@ -62,6 +62,12 @@ class Parser:
             enclosure = item.find("enclosure")
             if enclosure:
                 image = enclosure.get("url")
+            else:
+                thumbnail = item.find("thumbnail")
+                if thumbnail:
+                    image = thumbnail.get("url")
+                else:
+                    continue
 
             item_dict = {
                 "title": self.get_text(item, "title"),

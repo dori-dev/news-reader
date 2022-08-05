@@ -1,3 +1,4 @@
+import time
 import json
 import requests
 from requests import exceptions
@@ -7,7 +8,7 @@ API = "https://api.rss2json.com/v1/api.json"
 api_data = {
     'rss_url': '',
     'api_key': settings.API_KEY,
-    'count': 50,
+    'count': 100
 }
 TIMEOUT = 2
 
@@ -41,7 +42,8 @@ rss_urls = {
 def get_data(rss_urls: list):
     result = []
     for rss_url in rss_urls:
-        api_data['rss_url'] = rss_url
+        cache_disable = f"?time={int(time.time())}"
+        api_data['rss_url'] = rss_url+cache_disable
         try:
             response = requests.post(API, data=api_data, timeout=TIMEOUT)
         except (exceptions.ConnectionError, exceptions.ReadTimeout):

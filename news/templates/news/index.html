@@ -1,4 +1,5 @@
 {% load static %}
+{% load jalali_tags %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
   <head>
@@ -23,107 +24,62 @@
   </head>
 
   <body>
-    <nav id="navbar">
-      <nav class="navbar navbar-expand-lg bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">وبسایت خبری</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a
-                  class="nav-link active"
-                  aria-current="page"
-                  onclick="getNews('all')"
-                  >خانه</a
-                >
-              </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  دسته بندی
-                </a>
-                <ul
-                  id="webList"
-                  class="dropdown-menu"
-                  aria-labelledby="navbarDropdown"
-                >
-                  <li onclick="sendCategory(this.id)" id="0">
-                    <a class="dropdown-item" href="#">National</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="1">
-                    <a class="dropdown-item" href="#">Business</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="2">
-                    <a class="dropdown-item" href="#">Sport</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="3">
-                    <a class="dropdown-item" href="#">World</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="4">
-                    <a class="dropdown-item" href="#">Politics</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="5">
-                    <a class="dropdown-item" href="#">Technology</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="6">
-                    <a class="dropdown-item" href="#">Startup</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="7">
-                    <a class="dropdown-item" href="#">Entertainment</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="8">
-                    <a class="dropdown-item" href="#">Miscellaneous</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="9">
-                    <a class="dropdown-item" href="#">Hatke</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="10">
-                    <a class="dropdown-item" href="#">Science</a>
-                  </li>
-                  <li onclick="sendCategory(this.id)" id="11">
-                    <a class="dropdown-item" href="#">Automobile</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'news:index' %}">وبسایت خبری</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">خانه</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                دسته بندی
+              </a>
+              <ul class="dropdown-menu">
+                {% for tag in tags %}
+                <li>
+                  <a class="dropdown-item" href="{{ tag.slug }}">{{ tag }}</a>
+                </li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">درباره من</a>
+            </li>
+          </ul>
         </div>
-      </nav>
+      </div>
     </nav>
-    <div class="head container">
+    <div class="head container-fluid">
       <h3>
         آخرین اخبار <span class="badge text-bg-secondary">توسط محمد دری</span>
       </h3>
       <span class="line"></span>
     </div>
-    <div id="newsBox" class="container">
+    <div id="newsBox" class="container-fluid">
       {% for new in news %}
       <div class="newsCard card">
         <img
-          src="{{ new.enclosure.link }}"
+          src="{{ new.thumbnail }}"
           class="img ard-img-top img-thumbnail"
           alt="{{ new.title }}"
         />
         <h5 class="card-header">{{ new.title }}</h5>
         <div class="card-body">
-          <h5 class="card-title">{{ new.categories }}</h5>
+          <h5 class="card-title">
+            {% for category in new.categories.all %}
+            <a href="{{ category.slug }}">{{ category }}</a>
+            {% if forloop.last %}
+            {% else %}
+            -
+            {% endif %}
+              
+            {% endfor %}
+          </h5>
           <p class="card-text">{{ new.description }}</p>
           <a
             target="_blank"
@@ -132,12 +88,12 @@
             >بیشتر ...
           </a>
         </div>
-        <div class="text-center card-footer text-muted">{{ new.pubDate }}</div>
+        <div class="text-center card-footer text-muted">{{ new.pub_date|to_jalali:'%H:%M - %Y/%m/%d' }}</div>
       </div>
       {% endfor %}
     </div>
     <footer id="sticky-footer" class="flex-shrink-0 py-2 bg-dark text-white-50">
-      <div class="container text-center">
+      <div class="container-fluid text-center">
         <small>کپی رایت &copy; 2022 محمد دری</small>
       </div>
     </footer>

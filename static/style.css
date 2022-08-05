@@ -12,6 +12,12 @@
   box-sizing: border-box;
 }
 
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .head {
   display: flex;
   justify-content: center;
@@ -64,4 +70,10 @@ footer {
     width: 83vw;
     margin: 7px;
   }
+}
+
+.dropdown-menu {
+  text-align: right;
+  max-height: 280px;
+  overflow-y: auto;
 }

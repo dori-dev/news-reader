@@ -5,39 +5,36 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>وبسایت خبری</title>
-    <!-- favicon -->
+    <title>خبرگزاری آپتو</title>
     <link
       rel="shortcut icon"
       href="{% static 'imgs/favicon.ico' %}"
       type="image/x-icon"
     />
-    <!-- Bootstrap CS -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-    <!-- Local CSS -->
     <link rel="stylesheet" href="{% static 'style.css' %}" />
   </head>
 
   <body>
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'news:index' %}">وبسایت خبری</a>
+        <a class="navbar-brand" href="{% url 'news:index' %}">خبرگزاری آپتو</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">خانه</a>
+              <a class="nav-link active" aria-current="page" href="{% url 'news:index' %}">آخرین اخبار</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 دسته بندی
               </a>
               <ul class="dropdown-menu">
-                {% for tag in tags %}
+                {% for category in categories %}
                 <li>
-                  <a class="dropdown-item" href="{{ tag.slug }}">{{ tag }}</a>
+                  <a class="dropdown-item" href="{% url 'news:category' category.slug %}">{{ category }}</a>
                 </li>
                 {% endfor %}
               </ul>
@@ -51,7 +48,7 @@
     </nav>
     <div class="head container-fluid">
       <h3>
-        <span class="badge text-bg-secondary">آخرین اخبار</span>
+        <span class="badge text-bg-secondary">{{ label }}</span>
       </h3>
       <span class="line"></span>
     </div>
@@ -67,7 +64,7 @@
           <div class="card-body">
             <h5 class="card-text categories">
               {% for category in new.categories.all %}
-                <a class="badge text-bg-secondary" href="{{ category.slug }}">
+                <a class="badge text-bg-secondary" href="{% url 'news:category' category.slug %}">
                   {{ category }}
                 </a>
               {% endfor %}

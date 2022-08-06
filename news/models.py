@@ -9,7 +9,8 @@ GMP_IRAN_TIMEZONE = timedelta(hours=4, minutes=30)
 
 class New(models.Model):
     title = models.CharField(
-        max_length=256
+        max_length=256,
+        unique=True
     )
     pub_date = models.DateTimeField()
     link = models.URLField()
@@ -71,6 +72,7 @@ class New(models.Model):
     def replace_category(input_categories: str):
         replaces = {
             ("اخبار استان ها", "استانها"): "استان‌ها",
+            ("سایر ورزشها", "جهان ورزش", "دیگر ورزش‌ها", "ورزشی"): "ورزش",
         }
         for categories in replaces.keys():
             for category in categories:

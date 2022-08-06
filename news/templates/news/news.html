@@ -18,17 +18,20 @@
   <body>
     <nav class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'news:index' %}">خبرگزاری آپتو</a>
+        <a class="navbar-brand" href="{% url 'news:index' %}">
+          <img src="{% static 'imgs/icon.svg' %}" alt="" width="30" class="d-inline-block align-text-top ms-1 logo">
+          خبرگزاری آپتو
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'news:index' %}">آخرین اخبار</a>
+              <a class="nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}" aria-current="page" href="{% url 'news:index' %}">آخرین اخبار</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <a class="nav-link {% if request.resolver_match.url_name == 'category' %}active{% endif %} dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 دسته بندی
               </a>
               <ul class="dropdown-menu">
@@ -38,9 +41,6 @@
                 </li>
                 {% endfor %}
               </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">درباره من</a>
             </li>
           </ul>
         </div>
@@ -82,9 +82,15 @@
       {% endfor %}
       </div>
     </div>
-    <footer id="sticky-footer" class="flex-shrink-0 py-2 bg-dark text-white-50">
+    <footer id="sticky-footer" class="flex-shrink-0 py-1 bg-dark footer">
       <div class="container-fluid text-center">
-        <small>کپی رایت &copy; 2022 محمد دری</small>
+        <small>
+          آپتو
+          ۲۰۲۲
+          &copy;
+          توسط
+          <a href="">محمد دری</a>
+        </small>
       </div>
     </footer>
     <script src="{% static 'js/bootstrap.js' %}"></script>

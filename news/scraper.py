@@ -14,7 +14,7 @@ def get_data(rss_urls: list) -> List[FeedItem]:
         except (exceptions.ConnectionError, exceptions.ReadTimeout):
             continue
         try:
-            parser = Parser(xml.content)
+            parser = Parser(xml.content.decode('utf-8', 'ignore'))
             feed = parser.parse()
             data = feed.feed
             result.extend(data)

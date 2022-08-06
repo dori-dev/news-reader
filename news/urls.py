@@ -3,6 +3,6 @@ from . import views
 
 app_name = 'news'
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('category/<tag>/', views.category, name='category'),
+    path('', views.NewsIndex.as_view(), name='index'),
+    path('category/<tag>/', views.Category.as_view(), name='category'),
 ]

@@ -14,7 +14,10 @@ rss_urls = [
 
 @shared_task()
 def get_latest_news():
-    data = scraper.get_data(rss_urls)
+    try:
+        data = scraper.get_data(rss_urls)
+    except Exception:
+        return
     for new in data:
         search_new = New.objects.filter(title=new.title.strip())
         if not search_new.exists():

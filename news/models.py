@@ -42,6 +42,10 @@ class New(models.Model):
         categories = New.set_categories(
             New.replace_category(new_item.categories)
         )
+        categories = list(filter(
+            lambda category: "،" not in category,
+            categories
+        ))
         if categories:
             new.categories.add(*categories)
         new.save()
@@ -53,13 +57,13 @@ class New(models.Model):
             pub_date = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %Z")
         except ValueError:
             return now()
-        pub_date = pub_date + GMP_IRAN_TIMEZONE
+        if "+0430" not in date:
+            pub_date = pub_date + GMP_IRAN_TIMEZONE
         pub_date = make_aware(pub_date)
         return pub_date
 
     @staticmethod
     def set_categories(categories: str) -> list:
-        not_allowed_char = "،"
         if ">" in categories:
             sep = ">"
         elif " و " in categories:
@@ -67,12 +71,9 @@ class New(models.Model):
         else:
             sep = None
         if sep is not None:
-            return list(filter(
-                lambda category: not_allowed_char not in category,
-                map(
-                    str.strip,
-                    categories.split(sep)
-                )
+            return list(map(
+                str.strip,
+                categories.split(sep)
             ))
         return [categories]
 
@@ -81,7 +82,7 @@ class New(models.Model):
         replaces = {
             ("اخبار استان ها", "استانها"): "استان‌ها",
             ("سایر ورزشها", "جهان ورزش", "دیگر ورزش‌ها", "ورزشی"): "ورزش",
-            ("فوتبال ملی"): "فوتبال ایران",
+            ("فوتبال ملی",): "فوتبال ایران",
         }
         for categories in replaces.keys():
             for category in categories:

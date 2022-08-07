@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from django.utils import timezone
 from django.views.generic.list import ListView
 from taggit.models import Tag
 from .models import New
@@ -56,9 +55,7 @@ class NewsIndex(ListView):
         return context
 
     def get_queryset(self):
-        return New.objects.filter(
-            pub_date__lt=timezone.now()
-        ).order_by('-pub_date')
+        return New.objects.order_by('-pub_date')
 
 
 class Category(ListView):
@@ -83,6 +80,5 @@ class Category(ListView):
         tag = self.kwargs['tag']
         tag_object = get_object_or_404(Tag, slug=tag)
         return New.objects.filter(
-            categories__slug=tag_object.slug,
-            pub_date__lt=timezone.now()
+            categories__slug=tag_object.slug
         ).order_by('-pub_date')

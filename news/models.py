@@ -13,8 +13,12 @@ class New(models.Model):
         unique=True
     )
     pub_date = models.DateTimeField()
-    link = models.URLField()
-    thumbnail = models.URLField()
+    link = models.URLField(
+        unique=True
+    )
+    thumbnail = models.URLField(
+        unique=True
+    )
     description = models.TextField()
     categories = TaggableManager()
 
@@ -23,8 +27,8 @@ class New(models.Model):
         title = new_item.title.strip()
         # extract and set published date
         pub_date = New.convert_date(new_item.pub_date)
-        link = new_item.link
-        thumbnail = new_item.thumbnail
+        link = new_item.link.strip()
+        thumbnail = new_item.thumbnail.strip()
         description = new_item.description
         # create object
         new: New = New.objects.create(
@@ -55,6 +59,7 @@ class New(models.Model):
 
     @staticmethod
     def set_categories(categories: str) -> list:
+        not_allowed_char = "،"
         if ">" in categories:
             sep = ">"
         elif " و " in categories:
@@ -62,9 +67,12 @@ class New(models.Model):
         else:
             sep = None
         if sep is not None:
-            return list(map(
-                str.strip,
-                categories.split(sep)
+            return list(filter(
+                lambda category: not_allowed_char not in category,
+                map(
+                    str.strip,
+                    categories.split(sep)
+                )
             ))
         return [categories]
 
@@ -73,6 +81,7 @@ class New(models.Model):
         replaces = {
             ("اخبار استان ها", "استانها"): "استان‌ها",
             ("سایر ورزشها", "جهان ورزش", "دیگر ورزش‌ها", "ورزشی"): "ورزش",
+            ("فوتبال ملی"): "فوتبال ایران",
         }
         for categories in replaces.keys():
             for category in categories:

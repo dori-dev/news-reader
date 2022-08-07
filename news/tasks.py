@@ -1,3 +1,4 @@
+from django.db.models import Q
 from celery import shared_task
 from .models import New
 from . import scraper
@@ -19,7 +20,11 @@ def get_latest_news():
     except Exception:
         return
     for new in data:
-        search_new = New.objects.filter(title=new.title.strip())
+        search_new = New.objects.filter(
+            Q(title=new.title.strip()) |
+            Q(link=new.link.strip()) |
+            Q(thumbnail=new.thumbnail.strip())
+        )
         if not search_new.exists():
             try:
                 New.create_new(new)

@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'taggit',
     'jalali_date',
     'news.apps.NewsConfig',
+    'taggit.apps.TaggitAppConfig',
 ]
 
 MIDDLEWARE = [

@@ -3,40 +3,6 @@ from django.views.generic.list import ListView
 from taggit.models import Tag
 from .models import New
 
-not_allowed_categories = [
-    "تهران",
-    "خراسان رضوی",
-    "اصفهان",
-    "فارس",
-    "خوزستان",
-    "آذربایجان شرقی",
-    "مازندران",
-    "آذربایجان غربی",
-    "کرمان",
-    "سیستان و بلوچستان",
-    "البرز",
-    "گیلان",
-    "کرمانشاه",
-    "گلستان",
-    "هرمزگان",
-    "لرستان",
-    "همدان",
-    "کردستان",
-    "مرکزی",
-    "قم",
-    "قزوین",
-    "اردبیل",
-    "بوشهر",
-    "یزد",
-    "زنجان",
-    "چهارمحال و بختیاری",
-    "خراسان شمالی",
-    "خراسان جنوبی",
-    "کهگیلویه و بویراحمد",
-    "سمنان",
-    "ایلام",
-]
-
 
 class NewsIndex(ListView):
     model = New
@@ -47,15 +13,19 @@ class NewsIndex(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'categories': Tag.objects.exclude(
-                name__in=not_allowed_categories
+            'categories': Tag.objects.filter(
+                show_tag=True
+            ).exclude(
+                showing=False
             ).order_by('name'),
             'label': 'آخرین اخبار'
         })
         return context
 
     def get_queryset(self):
-        return New.objects.order_by('-pub_date')
+        return New.objects.exclude(
+            categories__showing=False
+        ).order_by('-pub_date')
 
 
 class Category(ListView):
@@ -69,8 +39,10 @@ class Category(ListView):
         tag = self.kwargs['tag']
         tag_object = get_object_or_404(Tag, slug=tag)
         context.update({
-            'categories': Tag.objects.exclude(
-                name__in=not_allowed_categories
+            'categories': Tag.objects.filter(
+                show_tag=True
+            ).exclude(
+                showing=False
             ).order_by('name'),
             'label': tag_object.name
         })
@@ -81,4 +53,6 @@ class Category(ListView):
         tag_object = get_object_or_404(Tag, slug=tag)
         return New.objects.filter(
             categories__slug=tag_object.slug
+        ).exclude(
+            categories__showing=False
         ).order_by('-pub_date')

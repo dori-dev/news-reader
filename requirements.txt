@@ -1,4 +1,4 @@
-Django==4.1
+Django==4.0.7
 celery==5.2.7
 django-celery-beat==2.3.0
 django-dotenv==1.4.2

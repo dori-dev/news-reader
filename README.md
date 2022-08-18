@@ -58,25 +58,48 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+## Install Redis
+
+Install redis from [here](https://redis.io/docs/getting-started/installation/)
+After installing redis run redis server
+
+```
+redis-server --daemonize yes
+```
+
+Then test redis
+
+```
+$ redis-cli ping
+PONG
+```
+
 ## Run Project
 
-run project using this command
+Run project using this command
 
 ```
 python manage.py runserver
 ```
 
-open _another terminal_ in **this path** then run `celery worker`
+Open _another terminal_ in **this path** then run `celery worker`
+
+```
+source env/bin/activate
+```
 
 ```
 python -m celery -A config worker -l info
 ```
 
-and open _another terminal_ in **this path** then run `celery beat`:
+And open _another terminal_ in **this path** then run `celery beat`:
+
+```
+source env/bin/activate
+```
 
 ```
 python -m celery -A config beat -l info
-
 ```
 
 ## Open On Browser

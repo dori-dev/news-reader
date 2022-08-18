@@ -102,6 +102,8 @@ source env/bin/activate
 python -m celery -A config beat -l info
 ```
 
+**Note:** Celery get news every 2 minutes.
+
 ## Open On Browser
 
 Home Page: [127.0.0.1:8000](http://127.0.0.1:8000/)<br>
